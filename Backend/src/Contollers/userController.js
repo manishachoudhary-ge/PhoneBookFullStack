@@ -3,7 +3,8 @@ const userModal = require("../Modals/userModal");
 const UserCreate = async (req, res) => {
   try {
     const { name, MobileNo, address, workCategory , avatar} = req.body;
-    console.log({ name, MobileNo, address, workCategory });
+    // console.log({ name, MobileNo, address, workCategory });
+    console.log(req.body);
 
     if (!name || !MobileNo || !address || !workCategory || !avatar) {
       return res.status(400).json({ error: "all fields are required" });
