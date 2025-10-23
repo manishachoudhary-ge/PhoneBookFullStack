@@ -9,7 +9,7 @@ const swaggerUi = require('swagger-ui-express');
 const db = require("./src/Config/db")
 
 const corsOptions = {
-    origin: 'https://phonebook-tan.vercel.app/', 
+    origin: 'https://phonebook-tan.vercel.app', 
     methods: 'GET,POST', 
     allowedHeaders: ['Content-Type', 'Authorization']
 };
