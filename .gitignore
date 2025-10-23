@@ -1,2 +1,5 @@
 node_modules/
 *.env
+Backend/node_modules/moongose/firebase_config.js
+Backend/node_modules/moongose/backup.js/2.js
+Backend/node_modules/moongose/s3_config.json
