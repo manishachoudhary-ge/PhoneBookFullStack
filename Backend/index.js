@@ -34,7 +34,7 @@ const options = {
             title: "swagger api docs",
             version: "0.1.0",
             description: 
-            " This is th Phonebook Backend apis documented with swagger",
+            " This is the Phonebook Backend apis documented with swagger",
         },
         servers: [
             {
