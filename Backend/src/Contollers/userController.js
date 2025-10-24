@@ -13,15 +13,16 @@ const UserCreate = async (req, res) => {
     const data = new userModal({ name, MobileNo, address, workCategory , avatar});
     const savedData = await data.save();
 
-    if (!savedData) {
-      return res.status(400).json({ error: "data not saved" });
-    }
+    // if (!savedData) {
+    //   return res.status(400).json({ error: "data not saved" });
+    // }
 
     return res.status(200).json({ Message: "data saved successfully",data: savedData });
 
   } catch (error) {
     console.error(error); 
-    return res.status(500).json({ error: "Internal server error" });
+    // return res.status(500).json({ error: "Internal server error" });
+    return res.status(400).json({ error: error.message || "data not saved" });
   }
 };
 
@@ -71,14 +72,34 @@ const deleteUser = async (req,res) =>{
 
 const listUser = async (req,res)=>{
     try{
-        const users = await userModal.find();
+        // const users = await userModal.find();
+        let { page = 1, limit = 10, search = "" } = req.query;
+        page = parseInt(page);
+        limit = parseInt(limit);
 
-        if(!users) {
-            return res.status(400).json({Message: "no user Found"});
-        }
+      // Create a filter for search (case-insensitive)
+      const filter = search
+      ? { name: { $regex: search, $options: "i" } }
+      : {};
+
+       const totalUsers = await userModal.countDocuments(filter);
+
+    const users = await userModal
+      .find(filter)
+      .sort({ name: 1 })           // Alphabetical
+      .skip((page - 1) * limit)   // Pagination
+      .limit(limit);
+
+        // if(!users) {
+        //     return res.status(400).json({Message: "no user Found"});
+        // }
         return res.status(200).json({
             message: "User fetched successfully",
-            user: users
+            // user: users
+            page,
+      totalPages: Math.ceil(totalUsers / limit),
+      totalUsers,
+      users,
         });
 
     }catch(error){

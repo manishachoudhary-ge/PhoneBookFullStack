@@ -20,7 +20,7 @@ const UserSchema = new mongoose.Schema({
     },
     avatar: {
         type: 'String',
-        defaul: "null"
+        default: "null"
     }
 },{timestamps: true})
 
