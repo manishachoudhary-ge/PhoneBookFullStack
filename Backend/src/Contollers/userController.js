@@ -10,6 +10,11 @@ const UserCreate = async (req, res) => {
       return res.status(400).json({ error: "all fields are required" });
     }
 
+    const existingContact = await userModal.findOne({MobileNo});
+    if(existingContact){
+        return res.status(400).json({message: "Contact with this Phone number already exits."});
+    }
+
     const data = new userModal({ name, MobileNo, address, workCategory , avatar});
     const savedData = await data.save();
 
@@ -77,7 +82,6 @@ const listUser = async (req,res)=>{
         page = parseInt(page);
         limit = parseInt(limit);
 
-      // Create a filter for search (case-insensitive)
       const filter = search
       ? { name: { $regex: search, $options: "i" } }
       : {};
@@ -86,8 +90,8 @@ const listUser = async (req,res)=>{
 
     const users = await userModal
       .find(filter)
-      .sort({ name: 1 })           // Alphabetical
-      .skip((page - 1) * limit)   // Pagination
+      .sort({ name: 1 })          
+      .skip((page - 1) * limit)   
       .limit(limit);
 
         // if(!users) {
@@ -97,9 +101,9 @@ const listUser = async (req,res)=>{
             message: "User fetched successfully",
             // user: users
             page,
-      totalPages: Math.ceil(totalUsers / limit),
-      totalUsers,
-      users,
+            totalPages: Math.ceil(totalUsers / limit),
+            totalUsers,
+            users,
         });
 
     }catch(error){
